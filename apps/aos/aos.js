@@ -1657,13 +1657,16 @@ function quoteResponse(sessionAttrs) {
                     quoteSpeechOutput.text = quoteSpeechOutput.text + ".Per month would cost $" + quoteResp.quoteList[0].paymentInfo.monthlyPaymentAmount;
                     quoteSpeechOutput.text = quoteSpeechOutput.text + " .Your down payment would be $" + quoteResp.quoteList[0].paymentInfo.inDownPaymentAmount;
                     quoteSpeechOutput.text = quoteSpeechOutput.text + " .Someone will be in touch with you shortly, but in the meantime would you like to continue from quote?";
+                    sessionAttrs.isError = false;
                 }
                 if (quoteResp && quoteResp.stopPageType === "DangerousDogSelected") {
                     quoteSpeechOutput.text = "Okay, Unable to proceed further. You have selected a dangerous dog.  ";
+                    sessionAttrs.isError = true;
                     quoteSpeechOutput.sessionAttrs = sessionAttrs;
                 }
                 if (quoteResp && quoteResp.stopPageType === "RejectedUser") {
                     quoteSpeechOutput.text = "Okay, Unable to proceed further. Please contact Allstate Agent. ";
+                    sessionAttrs.isError = true;
                     quoteSpeechOutput.sessionAttrs = sessionAttrs;
                 }
                 deferred.resolve(quoteSpeechOutput);
