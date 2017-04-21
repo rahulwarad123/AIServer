@@ -1864,13 +1864,40 @@ function mapResidenceInfo(sessionAttrs, residenceInfo) {
             residenceInfo.residenceDetails.residenceBuildingType = sessionAttrs.residenceBuildingType;
         }
 
-        residenceInfo.residenceDetails.unitsInBuilding = sessionAttrs.unitsInBuilding
-        residenceInfo.residenceDetails.businessoutofresidence = sessionAttrs.businessoutofresidence
-        if (sessionAttrs.personalItemsValue == "15000" || sessionAttrs.personalItemsValue == "25000" || sessionAttrs.personalItemsValue == "35000" || sessionAttrs.personalItemsValue == "45000") {
-            residenceInfo.residenceDetails.personalItems = sessionAttrs.personalItemsValue;
-            residenceInfo.residenceDetails.personalItemsValue = '';
+        residenceInfo.residenceDetails.unitsInBuilding = sessionAttrs.unitsInBuilding;
+        residenceInfo.residenceDetails.businessoutofresidence = sessionAttrs.businessoutofresidence;
+        if (sessionAttrs.state === "WI" || sessionAttrs.state === "ID" || sessionAttrs.state === "IA" || sessionAttrs.state === "AK" || sessionAttrs.state === "HI" ||
+            sessionAttrs.state === "MT" || sessionAttrs.state === "NE" || sessionAttrs.state === "ND" || sessionAttrs.state === "SD") {
+            if (sessionAttrs.personalItemsValue == "10000" || sessionAttrs.personalItemsValue == "20000" || sessionAttrs.personalItemsValue == "30000" || sessionAttrs.personalItemsValue == "40000") {
+                residenceInfo.residenceDetails.personalItems = sessionAttrs.personalItemsValue;
+                residenceInfo.residenceDetails.personalItemsValue = '';
+            }
+        }
+        else if (sessionAttrs.state === "AL" || sessionAttrs.state === "NC" || sessionAttrs.state === "AZ") {
+            if (sessionAttrs.personalItemsValue == "20000" || sessionAttrs.personalItemsValue == "30000" || sessionAttrs.personalItemsValue == "40000" || sessionAttrs.personalItemsValue == "50000") {
+                residenceInfo.residenceDetails.personalItems = sessionAttrs.personalItemsValue;
+                residenceInfo.residenceDetails.personalItemsValue = '';
+            }
+        }
+        else if (sessionAttrs.state === "NY") {
+            if (sessionAttrs.personalItemsValue == "25000" || sessionAttrs.personalItemsValue == "35000" || sessionAttrs.personalItemsValue == "45000" || sessionAttrs.personalItemsValue == "55000") {
+                residenceInfo.residenceDetails.personalItems = sessionAttrs.personalItemsValue;
+                residenceInfo.residenceDetails.personalItemsValue = '';
+            }
+        }
+        else if (sessionAttrs.state === "KS") {
+            if (sessionAttrs.personalItemsValue == "15000" || sessionAttrs.personalItemsValue == "25000" || sessionAttrs.personalItemsValue == "50000" || sessionAttrs.personalItemsValue == "100000") {
+                residenceInfo.residenceDetails.personalItems = sessionAttrs.personalItemsValue;
+                residenceInfo.residenceDetails.personalItemsValue = '';
+            }
         }
         else {
+            if (sessionAttrs.personalItemsValue == "15000" || sessionAttrs.personalItemsValue == "25000" || sessionAttrs.personalItemsValue == "35000" || sessionAttrs.personalItemsValue == "45000") {
+                residenceInfo.residenceDetails.personalItems = sessionAttrs.personalItemsValue;
+                residenceInfo.residenceDetails.personalItemsValue = '';
+            }
+        }
+        if (residenceInfo.residenceDetails && !residenceInfo.residenceDetails.personalItems) {
             residenceInfo.residenceDetails.personalItems = "Other";
             residenceInfo.residenceDetails.personalItemsValue = sessionAttrs.personalItemsValue;
         }
