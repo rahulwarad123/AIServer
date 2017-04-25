@@ -1506,12 +1506,19 @@ function getRentersSaveCustomerResponse(sessionAttrs) {
             var customerSaveInfo = getCustomerSaveInfo(sessionAttrs, sessionInfo);
             return rentersSaveCustomer(customerSaveInfo, sessionInfo.sessionId);
         }).then(function (saveResp) {
+            if (sessionAttrs.state === "FL") {
+                saveCustSpeechOutput.text = "Sorry! We are unable to take you forward with this entered state now. Please click on this to continue https://www.allstate.com/landingpages/renters-fl.aspx"
+            }
             if (saveResp && saveResp.transactionToken) {
                 sessionAttrs.transactionToken = saveResp.transactionToken;
                 saveCustSpeechOutput.sessionAttrs = sessionAttrs;
                 if (sessionAttrs.transactionToken) {
                     var state = sessionAttrs.transactionToken.state;
-                    if (state === "CA" || state === "KS" || state === "MD" || state === "DE" || state === "FL") {
+                    if (state === "MD" || state === "NY") {
+                        saveCustSpeechOutput.text = "Sorry! We are unable to take you forward with this entered state now. Please click on this to continue https://www.allstate.com/"
+                    }
+
+                    else if (state === "CA" || state === "KS" || state === "MD" || state === "DE" || state === "FL") {
                         saveCustSpeechOutput.text = "Great! Next I'll need to know a little about your employment status. Are you employed, self employed, unemployed, student, retired, home maker or military.";
                     }
                     else {
