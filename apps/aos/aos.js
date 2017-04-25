@@ -1358,6 +1358,7 @@ AOS.prototype.handlerRenterValidCustomer = function (sessionAttrs) {
 
     } else {
         speechOutput.text = "Thank you for the inputs, Near by agent will contact you for further information";
+        sessionAttrs.transactionToken = null;
         rentersQuoteSpeechResp.speechOutput = speechOutput;
         rentersQuoteSpeechResp.repromptOutput = speechOutput;
     }
@@ -1543,6 +1544,7 @@ function getRentersInfoResponse(sessionAttrs) {
                 deferred.resolve(rentersInfoSpeechOutput);
             }).catch(function (error) {
                 rentersInfoSpeechOutput.text = "something went wrong with renters insurance service. Please try again later.";
+                sessionAttrs.transactionToken = null;
                 deferred.resolve(rentersInfoSpeechOutput);
             });
     }
@@ -1561,6 +1563,7 @@ function confirmProfileResponse(sessionAttrs) {
                     deferred.resolve(rentersInfoSpeechOutput);
                 }).catch(function (error) {
                     rentersInfoSpeechOutput.text = "something went wrong with renters insurance service. Please try again later.";
+                    sessionAttrs.transactionToken = null;
                     deferred.resolve(rentersInfoSpeechOutput);
                 });
         }
@@ -1589,6 +1592,7 @@ function getRentersQuoteResponse(sessionAttrs) {
                 deferred.resolve(quoteSpeechOutput);
             }).catch(function (error) {
                 quoteSpeechOutput.text = "something went wrong with renters insurance service. Please try again later.";
+                sessionAttrs.transactionToken = null;
                 deferred.resolve(quoteSpeechOutput);
             });
     }
@@ -1656,7 +1660,7 @@ function quoteResponse(sessionAttrs) {
                     quoteSpeechOutput.text = quoteSpeechOutput.text + "Total payable amount $" + quoteResp.quoteList[0].paymentInfo.paymentAmount;
                     quoteSpeechOutput.text = quoteSpeechOutput.text + ".Per month would cost $" + quoteResp.quoteList[0].paymentInfo.monthlyPaymentAmount;
                     quoteSpeechOutput.text = quoteSpeechOutput.text + " .Your down payment would be $" + quoteResp.quoteList[0].paymentInfo.inDownPaymentAmount;
-                    quoteSpeechOutput.text = quoteSpeechOutput.text + " .Someone will be in touch with you shortly, but in the meantime would you like to continue from quote?";
+                    quoteSpeechOutput.text = quoteSpeechOutput.text + " .Someone will be in touch with you shortly, but in the meantime would you like to continue from quote?";
                     sessionAttrs.isError = false;
                 }
                 if (quoteResp && quoteResp.stopPageType === "DangerousDogSelected") {
@@ -1672,6 +1676,7 @@ function quoteResponse(sessionAttrs) {
                 deferred.resolve(quoteSpeechOutput);
             }).catch(function (error) {
                 quoteSpeechOutput.text = "something went wrong with renters insurance service. Please try again later.";
+                sessionAttrs.transactionToken=null;
                 quoteSpeechOutput.sessionAttrs = sessionAttrs;
                 deferred.resolve(quoteSpeechOutput);
             });
