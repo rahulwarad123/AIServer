@@ -313,12 +313,12 @@ AOS.prototype.handlerRentersEmpStatus = function (sessionAttrs) {
                 if (agentDetails && agentDetails.length > 0) {
                     sessionAttrs.agentDetails = agentDetails[0];
                 }
-                if (sessionAttrs.state != "FL") {		
- -                    speechOutput.text = "Now please mention your gender ";		
- -                }		
- -                else {		
- -                    speechOutput.text = "Thanks! Have you lived in your residence for more than two years?";		
- -                }
+                if (sessionAttrs.state != "FL") {
+                    speechOutput.text = "Now please mention your gender ";
+                }
+                else {
+                    speechOutput.text = "Thanks! Have you lived in your residence for more than two years?";
+                }
                 rentersFindSpeechResp.speechOutput = speechOutput;
                 rentersFindSpeechResp.repromptOutput = speechOutput;
                 rentersFindSpeechResp.sessionAttrs = sessionAttrs;
@@ -1707,7 +1707,7 @@ function getRentersSaveCustomerResponse(sessionAttrs) {
                 sessionAttrs.transactionToken = saveResp.transactionToken;
                 saveCustSpeechOutput.sessionAttrs = sessionAttrs;
                 if (sessionAttrs.transactionToken) {
-                    var state = sessionAttrs.transactionToken.state;                    
+                    var state = sessionAttrs.transactionToken.state;
                     //if (state === "CA" || state === "KS" || state === "MD" || state === "DE" || state === "FL") {
                     if (state === "CA" || state === "KS" || state === "DE") {
                         saveCustSpeechOutput.text = "Great! Next I'll need to know a little about your employment status. Are you employed, self employed, unemployed, student, retired, home maker or military.";
