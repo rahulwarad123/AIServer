@@ -1262,6 +1262,11 @@ AOS.prototype.handlerRentersStSpecQuestionSeven = function (sessionAttrs) {
                     speechOutput.text = "Sure, What is the employement status of the resident?";
                 }
             }
+            else if(sessionAttrs.state === "NY"){
+                if (sessionAttrs.additionalResidents === "true") {
+                        speechOutput.text = "Please provide marital status of the resident?";
+                    }
+            }
         }
     }
     else {
