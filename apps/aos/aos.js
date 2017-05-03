@@ -1424,6 +1424,9 @@ AOS.prototype.handlerRentersStSpecQuestionTen = function (sessionAttrs) {
                 }
             }
         }
+        else if (sessionAttrs.additionalResidents === "true") {
+            speechOutput.text = "Got it. Just one more question. What is the estimated value of all personal items in your residence?";
+        }
     }
     else {
         if (sessionAttrs.transactionToken) {
