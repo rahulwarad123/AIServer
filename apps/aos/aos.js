@@ -1363,9 +1363,12 @@ AOS.prototype.handlerRentersStSpecQuestionNine = function (sessionAttrs) {
         }
         else {
             if (sessionAttrs.additionalResidents === "true") {
-                sessionAttrs.isDogAdded = sessionAttrs.stateSpecQEightAns;
+                sessionAttrs.isDogAdded = sessionAttrs.stateSpecQNineAns;
                 if (sessionAttrs.isDogAdded === "true") {
                     speechOutput.text = "Please list the dominant breed of your dog or dogs.";
+                }
+                else{
+                  speechOutput.text = "Got it. Just one more question. What is the estimated value of all personal items in your residence?";  
                 }
             }
         }
