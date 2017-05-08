@@ -1,6 +1,7 @@
 
 
 var aos = require('./../../../apps/aos/aos.js');
+var ars = require('./../../../apps/ars/ars.js');
 var q = require('q');
 
 var ApiAiIntentHandler = function () { };
@@ -35,6 +36,60 @@ function intentHandlers(body) {
             break;
         case "MENU":
             handleMenuIntent(body, deferred)
+                .then(function (responseInfo) {
+                    deferred.resolve(responseInfo);
+                });
+            break;
+		case "AGENT-FIND":
+            handleAgentFindIntent(body, deferred)
+                .then(function (responseInfo) {
+                    deferred.resolve(responseInfo);
+                });
+            break;
+        case "AGENT-FIND-BYZIP":
+            handleAgentFindByZip(body, deferred)
+                .then(function (responseInfo) {
+                    deferred.resolve(responseInfo);
+                });
+            break;
+        case "AGENT-FIND-BYCURRENTLOC":
+            break;
+        case "AGENT-FIND-EMAIL-YES":
+            handleAgentFindEmailYes(body, deferred)
+                .then(function (responseInfo) {
+                    deferred.resolve(responseInfo);
+                });
+            break;
+        case "AGENT-FIND-EMAIL-NO":
+            handleAgentFindEmailNo(body, deferred)
+                .then(function (responseInfo) {
+                    deferred.resolve(responseInfo);
+                });
+            break;
+        case "AGENT-FIND-EMAIL-SEND":
+            handleAgentFindEmailSend(body, deferred)
+                .then(function (responseInfo) {
+                    deferred.resolve(responseInfo);
+                });
+            break;
+		case "ARS-SERVICE-START":
+        case "ARS-SERVICE-LOCATION":
+            handleARSStartIntent(body, deferred)
+                .then(function (responseInfo) {
+                    deferred.resolve(responseInfo);
+                });
+            break;
+        case "ARS-SERVICE-VEHICLE-YEAR":
+        case "ARS-SERVICE-VEHICLE-MAKE":
+        case "ARS-SERVICE-VEHICLE-MODEL":
+        case "ARS-SERVICE-VEHICLE-YMM":
+            handleARSVehicleYMMIntent(body, deferred)
+                .then(function (responseInfo) {
+                    deferred.resolve(responseInfo);
+                });
+            break;
+        case "ARS-SERVICE-PRICE-AGREE":
+            handleARSAgreementIntent(body, deferred)
                 .then(function (responseInfo) {
                     deferred.resolve(responseInfo);
                 });
@@ -1675,6 +1730,203 @@ function handleWelcomeIntent(body, deferred) {
     welcomeSpeechResp.displayText = welcomeSpeechResp.speech;
     deferred.resolve(welcomeSpeechResp);
     return deferred.promise;
+}
+
+function handleAgentFindEmailYes(body, deferred) {
+    var agentFindSpeechResp = {};
+    var result = body.result;
+    var agFindCntx = result.contexts.find(function (curCntx) { return curCntx.name === "agentfindbyzip"; });
+    var sessionAttrs = getAgentSessionAttributes(agFindCntx);
+
+
+    aos.handleAgentFindEmailYesIntent(sessionAttrs)
+        .then(function (agentFindSpeechResponse) {
+            agentFindSpeechResp.speech = agentFindSpeechResponse.speechOutput.text;
+            agentFindSpeechResp.displayText = agentFindSpeechResponse.speechOutput.text;
+            deferred.resolve(agentFindSpeechResp);
+        });
+
+    return deferred.promise;
+}
+
+function handleAgentFindEmailNo(body, deferred) {
+    var agentFindSpeechResp = {};
+    var result = body.result;
+    var agFindCntx = result.contexts.find(function (curCntx) { return curCntx.name === "agentfindbyzip"; });
+    var sessionAttrs = getAgentSessionAttributes(agFindCntx);
+
+
+    aos.handleAgentFindEmailNoIntent(sessionAttrs)
+        .then(function (agentFindSpeechResponse) {
+            agentFindSpeechResp.speech = agentFindSpeechResponse.speechOutput.text;
+            agentFindSpeechResp.displayText = agentFindSpeechResponse.speechOutput.text;
+            deferred.resolve(agentFindSpeechResp);
+        });
+
+    return deferred.promise;
+
+}
+
+function handleAgentFindEmailSend(body, deferred) {
+    var agentFindSpeechResp = {};
+    var result = body.result;
+    var agFindCntx = result.contexts.find(function (curCntx) { return curCntx.name === "agentfindbyzip"; });
+    var sessionAttrs = getAgentSessionAttributes(agFindCntx);
+
+    console.log("handleAgentFindEmailSend - start");
+
+    aos.handleAgentFindEmailSendIntent(sessionAttrs)
+        .then(function (agentFindSpeechResponse) {
+            agentFindSpeechResp.speech = agentFindSpeechResponse.speechOutput.text;
+            agentFindSpeechResp.displayText = agentFindSpeechResponse.speechOutput.text;
+            console.log("handleAgentFindEmailSend - end");
+            deferred.resolve(agentFindSpeechResp);
+        });
+
+    return deferred.promise;
+}
+
+function handleAgentFindByZip(body, deferred) {
+    var agentFindSpeechResp = {};
+    var result = body.result;
+    var agFindCntx = result.contexts.find(function (curCntx) { return curCntx.name === "agent"; });
+    var sessionAttrs = getAgentSessionAttributes(agFindCntx);
+
+    if (sessionAttrs.zip) {
+        aos.handleAgentFindByZipIntent(sessionAttrs)
+            .then(function (agentFindSpeechResponse) {
+                agentFindSpeechResp.speech = agentFindSpeechResponse.speechOutput.text;
+                agentFindSpeechResp.displayText = agentFindSpeechResponse.speechOutput.text;
+                agentFindSpeechResp.contextOut = [{ "name": "AgentFindByZip", "parameters": sessionAttrs }];
+                deferred.resolve(agentFindSpeechResp);
+            });
+    }
+    return deferred.promise;
+}
+
+function handleAgentFindIntent(body, deferred) {
+    var agentFindSpeechResp = {};
+    var result = body.result;
+    var agFindCntx = result.contexts.find(function (curCntx) { return curCntx.name === "agent"; });
+    var sessionAttrs = getAgentSessionAttributes(agFindCntx);
+
+    aos.handleAgentFindRequest(sessionAttrs)
+        .then(function (agentFindSpeechResponse) {
+            agentFindSpeechResp.speech = agentFindSpeechResponse.speechOutput.text;
+            agentFindSpeechResp.displayText = agentFindSpeechResponse.speechOutput.text;
+            deferred.resolve(agentFindSpeechResp);
+        });
+
+    return deferred.promise;
+}
+
+function getAgentSessionAttributes(contextInfo) {
+    var sessionAttrs = { "zip": undefined, "email": undefined, "agent": {} };
+    if (contextInfo) {
+        var zip = contextInfo.parameters["zip.original"];
+        if (zip && zip.trim().length > 0) {
+            sessionAttrs.zip = contextInfo.parameters["zip"];
+        }
+        var email = contextInfo.parameters["email.original"];
+        if (email && email.trim().length > 0) {
+            sessionAttrs.email = email;
+        }
+        if (contextInfo.parameters.agent) {
+            sessionAttrs.agent = contextInfo.parameters.agent;
+        }
+    }
+
+    return sessionAttrs;
+}
+
+function handleARSAgreementIntent(body, deferred) {
+    var arsSpeechResp = {};
+    var result = body.result;
+    var agFindCntx = result.contexts.find(function (curCntx) { return curCntx.name === "ars"; });
+    var sessionAttrs = getARSSessionAttributes(agFindCntx);
+
+
+    ars.handleRoadServiceAgreementHandler(sessionAttrs)
+        .then(function (roasServiceResponse) {
+            arsSpeechResp.speech = roasServiceResponse.speechOutput.text;
+            arsSpeechResp.displayText = roasServiceResponse.speechOutput.text;
+            deferred.resolve(arsSpeechResp);
+        });
+
+    return deferred.promise;
+}
+
+function handleARSStartIntent(body, deferred) {
+    var arsSpeechResp = {};
+    var result = body.result;
+    var agFindCntx = result.contexts.find(function (curCntx) { return curCntx.name === "ars"; });
+    var sessionAttrs = getARSSessionAttributes(agFindCntx);
+
+
+    ars.handleRoadServiceHandler(sessionAttrs)
+        .then(function (roasServiceResponse) {
+            arsSpeechResp.speech = roasServiceResponse.speechOutput.text;
+            arsSpeechResp.displayText = roasServiceResponse.speechOutput.text;
+            deferred.resolve(arsSpeechResp);
+        });
+
+    return deferred.promise;
+}
+
+function handleARSVehicleYMMIntent(body, deferred) {
+    var arsSpeechResp = {};
+    var result = body.result;
+    var agFindCntx = result.contexts.find(function (curCntx) { return curCntx.name === "ars"; });
+    var sessionAttrs = getARSSessionAttributes(agFindCntx);
+
+
+    ars.handleRoadServiceYMMHandler(sessionAttrs)
+        .then(function (roasServiceResponse) {
+            arsSpeechResp.speech = roasServiceResponse.speechOutput.text;
+            arsSpeechResp.displayText = roasServiceResponse.speechOutput.text;
+            deferred.resolve(arsSpeechResp);
+        });
+
+    return deferred.promise;
+}
+
+function getARSSessionAttributes(contextInfo) {
+    var sessionAttrs = {
+        "serviceType": undefined, "cost": undefined,
+        "keyLocation": undefined, "vehicle": {}, "vehicleLocation": undefined
+    };
+
+    if (contextInfo) {
+        var serviceType = contextInfo.parameters["ars-service-type.original"];
+        if (serviceType && serviceType.trim().length > 0) {
+            sessionAttrs.serviceType = contextInfo.parameters["ars-service-type"];
+        }
+        var keyLocation = contextInfo.parameters["ars-key-loc.original"];
+        if (keyLocation && keyLocation.trim().length > 0) {
+            sessionAttrs.keyLocation = contextInfo.parameters["ars-key-loc"];
+        }
+        var vehicleLocation = contextInfo.parameters["location.original"];
+        if (vehicleLocation && vehicleLocation.trim().length > 0) {
+            sessionAttrs.vehicleLocation = contextInfo.parameters["location"];
+            if (sessionAttrs.vehicleLocation.toUpperCase() === 'CURRENT') {
+                sessionAttrs.vehicleLocation = "1500 Capitol Drive, Northbrook, IL 60060";
+            }
+        }
+        var vehicleYear = contextInfo.parameters["vehicle-year.original"];
+        if (vehicleYear && vehicleYear.trim().length > 0) {
+            sessionAttrs.vehicleYear = contextInfo.parameters["vehicle-year"];
+        }
+        var vehicleMake = contextInfo.parameters["vehicle-make.original"];
+        if (vehicleMake && vehicleMake.trim().length > 0) {
+            sessionAttrs.vehicleMake = contextInfo.parameters["vehicle-make"];
+        }
+        var vehicleModel = contextInfo.parameters["vehicle-model.original"];
+        if (vehicleModel && vehicleModel.trim().length > 0) {
+            sessionAttrs.vehicleModel = contextInfo.parameters["vehicle-model"];
+        }
+    }
+
+    return sessionAttrs;
 }
 
 function handleHelpIntent(body, deferred) {
