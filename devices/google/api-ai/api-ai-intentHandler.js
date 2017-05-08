@@ -1893,7 +1893,7 @@ function handleARSVehicleYMMIntent(body, deferred) {
 function getARSSessionAttributes(contextInfo) {
     var sessionAttrs = {
         "serviceType": undefined, "cost": undefined,
-        "keyLocation": undefined, "vehicle": {}, "vehicleLocation": undefined
+        "keyLocation": undefined, "vehicle": {}, "vehicleLocation": undefined, "IsAgree": undefined
     };
 
     if (contextInfo) {
@@ -1923,6 +1923,10 @@ function getARSSessionAttributes(contextInfo) {
         var vehicleModel = contextInfo.parameters["vehicle-model.original"];
         if (vehicleModel && vehicleModel.trim().length > 0) {
             sessionAttrs.vehicleModel = contextInfo.parameters["vehicle-model"];
+        }
+	    var IsAgree = contextInfo.parameters["IsAgree.original"];
+        if(IsAgree && IsAgree.trim().length > 0){
+            sessionAttrs.IsAgree = contextInfo.parameters["IsAgree"];
         }
     }
 
