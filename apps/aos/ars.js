@@ -52,10 +52,16 @@ ARS.prototype.handleRoadServiceAgreementHandler = function (sessionAttrs) {
     var speechOutput = new Speech();
     var repromptOutput = new Speech();
 
+    //speechOutput.text = "Thank you, for choosing Allstate. We have dispatched 'help' to you.";
+    if(sessionAttrs.IsAgree == "true"){
     speechOutput.text = "Thank you, for choosing Allstate. We have dispatched 'help' to you.";
+ }
+ else{
+     speechOutput.text = "Thank you, for choosing Allstate. please try again!";
+ }
     repromptOutput.text = speechOutput.text;
     roadServiceSpeechResp.speechOutput = speechOutput;
-    roadServiceSpeechResp.repromptOutput = repromptOutput;
+    roadServiceSpeechResp.repromptOutput = null;
 
     deferred.resolve(roadServiceSpeechResp);
 
@@ -202,6 +208,7 @@ function askForCostAgreement(serviceCostInfo) {
     repromptOutput.text = speechOutput.text;
     locationServSpeechResp.speechOutput = speechOutput;
     locationServSpeechResp.repromptOutput = repromptOutput;
+    locationServSpeechResp.sessionAttrs = sessionAttrs;
     return locationServSpeechResp;
 }
 
@@ -213,6 +220,7 @@ function askVehicleYear(sessionAttrs) {
     repromptOutput.text = speechOutput.text;
     locationServSpeechResp.speechOutput = speechOutput;
     locationServSpeechResp.repromptOutput = repromptOutput;
+    locationServSpeechResp.sessionAttrs = sessionAttrs;
     return locationServSpeechResp;
 }
 
@@ -224,6 +232,7 @@ function askVehicleYMM(sessionAttrs) {
     repromptOutput.text = speechOutput.text;
     locationServSpeechResp.speechOutput = speechOutput;
     locationServSpeechResp.repromptOutput = repromptOutput;
+    locationServSpeechResp.sessionAttrs = sessionAttrs;
     return locationServSpeechResp;
 }
 
@@ -235,6 +244,7 @@ function askVehicleMake(sessionAttrs) {
     repromptOutput.text = "What's the make?";;
     locationServSpeechResp.speechOutput = speechOutput;
     locationServSpeechResp.repromptOutput = repromptOutput;
+    locationServSpeechResp.sessionAttrs = sessionAttrs;
     return locationServSpeechResp;
 }
 
@@ -246,6 +256,7 @@ function askVehicleModel(sessionAttrs) {
     repromptOutput.text = "vehicle's model please";;
     locationServSpeechResp.speechOutput = speechOutput;
     locationServSpeechResp.repromptOutput = repromptOutput;
+    locationServSpeechResp.sessionAttrs = sessionAttrs;
     return locationServSpeechResp;
 }
 
@@ -257,6 +268,7 @@ function askLocation() {
     repromptOutput.text = "Please provide your vehicle's location, or you can say 'current location'";;
     locationServSpeechResp.speechOutput = speechOutput;
     locationServSpeechResp.repromptOutput = repromptOutput;
+    locationServSpeechResp.sessionAttrs = sessionAttrs;
     return locationServSpeechResp;
 }
 
@@ -268,6 +280,7 @@ function askKeyLocation() {
     repromptOutput.text = speechOutput.text;
     locationServSpeechResp.speechOutput = speechOutput;
     locationServSpeechResp.repromptOutput = repromptOutput;
+    locationServSpeechResp.sessionAttrs = sessionAttrs;
     return locationServSpeechResp;
 }
 
