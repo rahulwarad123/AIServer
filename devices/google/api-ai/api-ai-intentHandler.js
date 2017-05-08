@@ -1,7 +1,7 @@
 
 
 var aos = require('./../../../apps/aos/aos.js');
-var ars = require('./../../../apps/ars/ars.js');
+var ars = require('./../../../apps/aos/ars.js');
 var q = require('q');
 
 var ApiAiIntentHandler = function () { };
