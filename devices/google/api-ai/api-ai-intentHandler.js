@@ -79,6 +79,12 @@ function intentHandlers(body) {
                     deferred.resolve(responseInfo);
                 });
             break;
+	case "ARS-LOCKOUT-SERVICE-YES":
+            handleARSLockServiceYes(body, deferred)
+                .then(function (responseInfo) {
+                    deferred.resolve(responseInfo);
+                });
+            break;
         case "ARS-SERVICE-VEHICLE-YEAR":
         case "ARS-SERVICE-VEHICLE-MAKE":
         case "ARS-SERVICE-VEHICLE-MODEL":
@@ -1890,6 +1896,17 @@ function handleARSVehicleYMMIntent(body, deferred) {
     return deferred.promise;
 }
 
+function handleARSLockServiceYes(body, deferred) {
+    var arsSpeechResp = {};
+    var result = body.result;
+    var agFindCntx = result.contexts.find(function (curCntx) { return curCntx.name === "ars"; });
+    var sessionAttrs = getARSSessionAttributes(agFindCntx);
+    arsSpeechResp.speech = "Sure I can assist you with that.Where are your keys? In your car? or Lost? or Broken?";
+    arsSpeechResp.displayText = "Where are your keys? In your car? or Lost? or Broken?";
+    deferred.resolve(arsSpeechResp);    
+    return deferred.promise;
+}
+
 function getARSSessionAttributes(contextInfo) {
     var sessionAttrs = {
         "serviceType": undefined, "cost": undefined,
@@ -1900,6 +1917,10 @@ function getARSSessionAttributes(contextInfo) {
         var serviceType = contextInfo.parameters["ars-service-type.original"];
         if (serviceType && serviceType.trim().length > 0) {
             sessionAttrs.serviceType = contextInfo.parameters["ars-service-type"];
+        }
+	    var islockedout = contextInfo.parameters["lockoutService.original"];
+        if (islockedout && islockedout.trim().length > 0) {
+            sessionAttrs.islockedout = contextInfo.parameters["lockoutService"];
         }
         var keyLocation = contextInfo.parameters["ars-key-loc.original"];
         if (keyLocation && keyLocation.trim().length > 0) {
