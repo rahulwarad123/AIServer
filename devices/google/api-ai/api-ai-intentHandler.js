@@ -1726,7 +1726,7 @@ function handleWelcomeIntent(body, deferred) {
     var welcomeSpeechResp = {};
     welcomeSpeechResp.speech = "Welcome to the Allstatebot. I can help you with your insurance-related questions.  ";
 
-    welcomeSpeechResp.speech = welcomeSpeechResp.speech + "    You can choose from options: Get Renters Quote, Help.";
+    welcomeSpeechResp.speech = welcomeSpeechResp.speech + "    You can choose from options: Get Renters Quote, Find your need by agent and get road side service Help.";
     welcomeSpeechResp.displayText = welcomeSpeechResp.speech;
     deferred.resolve(welcomeSpeechResp);
     return deferred.promise;
