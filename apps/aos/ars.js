@@ -125,24 +125,24 @@ function hanldeLockoutService(sessionAttrs, roadServiceSpeechResp) {
     if (!sessionAttrs.vehicleYear && !sessionAttrs.vehicleMake && !sessionAttrs.vehicleModel) {
         if (sessionAttrs.keyLocation) {
             if (sessionAttrs.vehicleLocation) {
-                roadServiceSpeechResp = askVehicleYMM();
+                roadServiceSpeechResp = askVehicleYMM(sessionAttrs);
             } else {
-                roadServiceSpeechResp = askLocation();
+                roadServiceSpeechResp = askLocation(sessionAttrs);
             }
         } else {
             //ask current Location.
-            roadServiceSpeechResp = askKeyLocation();
+            roadServiceSpeechResp = askKeyLocation(sessionAttrs);
         }
         deferred.resolve(roadServiceSpeechResp);
     } else {
         if (!sessionAttrs.vehicleYear) {
-            roadServiceSpeechResp = askVehicleYear();
+            roadServiceSpeechResp = askVehicleYear(sessionAttrs);
             deferred.resolve(roadServiceSpeechResp);
         } else if (!sessionAttrs.vehicleModel) {
-            roadServiceSpeechResp = askVehicleModel();
+            roadServiceSpeechResp = askVehicleModel(sessionAttrs);
             deferred.resolve(roadServiceSpeechResp);
         } else if (!sessionAttrs.vehicleMake) {
-            roadServiceSpeechResp = askVehicleMake();
+            roadServiceSpeechResp = askVehicleMake(sessionAttrs);
             deferred.resolve(roadServiceSpeechResp);
         } else {
             getServiceCosts()
