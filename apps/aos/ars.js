@@ -204,7 +204,7 @@ function askForCostAgreement(sessionAttrs, serviceCostInfo) {
     var locationServSpeechResp = new SpeechResponse();
     var speechOutput = new Speech();
     var repromptOutput = new Speech();
-    speechOutput.text = "The approximate cost for Lockout service will be $" + serviceCostInfo.cost + ".Do you agree?";
+    speechOutput.text = "The approximate cost for Lockout service will be $" + serviceCostInfo.cost + ". Do you agree?";
     repromptOutput.text = speechOutput.text;
     locationServSpeechResp.speechOutput = speechOutput;
     locationServSpeechResp.repromptOutput = repromptOutput;
