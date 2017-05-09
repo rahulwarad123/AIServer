@@ -1925,6 +1925,7 @@ function getARSSessionAttributes(contextInfo) {
         var keyLocation = contextInfo.parameters["ars-key-loc.original"];
         if (keyLocation && keyLocation.trim().length > 0) {
             sessionAttrs.keyLocation = contextInfo.parameters["ars-key-loc"];
+            sessionAttrs.serviceType = "Lockout";
         }
         var vehicleLocation = contextInfo.parameters["location.original"];
         if (vehicleLocation && vehicleLocation.trim().length > 0) {
