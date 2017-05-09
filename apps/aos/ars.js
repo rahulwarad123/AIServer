@@ -260,7 +260,7 @@ function askVehicleModel(sessionAttrs) {
     return locationServSpeechResp;
 }
 
-function askLocation() {
+function askLocation(sessionAttrs) {
     var locationServSpeechResp = new SpeechResponse();
     var speechOutput = new Speech();
     var repromptOutput = new Speech();
@@ -272,7 +272,7 @@ function askLocation() {
     return locationServSpeechResp;
 }
 
-function askKeyLocation() {
+function askKeyLocation(sessionAttrs) {
     var locationServSpeechResp = new SpeechResponse();
     var speechOutput = new Speech();
     var repromptOutput = new Speech();
