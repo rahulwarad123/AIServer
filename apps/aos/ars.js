@@ -54,7 +54,7 @@ ARS.prototype.handleRoadServiceAgreementHandler = function (sessionAttrs) {
 
     //speechOutput.text = "Thank you, for choosing Allstate. We have dispatched 'help' to you.";
     if (sessionAttrs.IsAgree == "true") {
-        speechOutput.text = "Thank you, for choosing Allstate. We have dispatched 'help' to you.";
+        speechOutput.text = "Thank you, for choosing Allstate. We have dispatched 'help' to your location.";
     }
     else {
         speechOutput.text = "Thank you, for choosing Allstate. please try again!";
@@ -264,8 +264,8 @@ function askLocation() {
     var locationServSpeechResp = new SpeechResponse();
     var speechOutput = new Speech();
     var repromptOutput = new Speech();
-    speechOutput.text = "Please provide your vehicle's location, or you can say 'current location'";
-    repromptOutput.text = "Please provide your vehicle's location, or you can say 'current location'";;
+    speechOutput.text = "Sorry to hear that, Please provide your vehicle's location, or you can say 'current location'";
+    repromptOutput.text = "Sorry to hear that, Please provide your vehicle's location, or you can say 'current location'";
     locationServSpeechResp.speechOutput = speechOutput;
     locationServSpeechResp.repromptOutput = repromptOutput;
     locationServSpeechResp.sessionAttrs = sessionAttrs;
@@ -276,7 +276,7 @@ function askKeyLocation() {
     var locationServSpeechResp = new SpeechResponse();
     var speechOutput = new Speech();
     var repromptOutput = new Speech();
-    speechOutput.text = "Where are your keys? In your car? or Lost? or Borken?";
+    speechOutput.text = "Sorry to hear that, Where are your keys? In your car? or Lost? or Borken?";
     repromptOutput.text = speechOutput.text;
     locationServSpeechResp.speechOutput = speechOutput;
     locationServSpeechResp.repromptOutput = repromptOutput;
