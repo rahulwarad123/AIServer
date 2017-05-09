@@ -53,12 +53,12 @@ ARS.prototype.handleRoadServiceAgreementHandler = function (sessionAttrs) {
     var repromptOutput = new Speech();
 
     //speechOutput.text = "Thank you, for choosing Allstate. We have dispatched 'help' to you.";
-    if(sessionAttrs.IsAgree == "true"){
-    speechOutput.text = "Thank you, for choosing Allstate. We have dispatched 'help' to you.";
- }
- else{
-     speechOutput.text = "Thank you, for choosing Allstate. please try again!";
- }
+    if (sessionAttrs.IsAgree == "true") {
+        speechOutput.text = "Thank you, for choosing Allstate. We have dispatched 'help' to you.";
+    }
+    else {
+        speechOutput.text = "Thank you, for choosing Allstate. please try again!";
+    }
     repromptOutput.text = speechOutput.text;
     roadServiceSpeechResp.speechOutput = speechOutput;
     roadServiceSpeechResp.repromptOutput = null;
@@ -150,7 +150,7 @@ function hanldeLockoutService(sessionAttrs, roadServiceSpeechResp) {
                     //provide esitmated cost and get agreement.
                     var costsRespJSON = JSON.parse(costsResp);
                     var serviceCostInfo = getServiceTypeCostInfo(costsRespJSON, "LOCKOUT");
-                    roadServiceSpeechResp = askForCostAgreement(serviceCostInfo);
+                    roadServiceSpeechResp = askForCostAgreement(sessionAttrs, serviceCostInfo);
                     deferred.resolve(roadServiceSpeechResp);
                 });
         }
@@ -200,7 +200,7 @@ function getServiceTypeCostInfo(costResp, serviceTypeName) {
     return srvTypeInfo;
 }
 
-function askForCostAgreement(serviceCostInfo) {
+function askForCostAgreement(sessionAttrs, serviceCostInfo) {
     var locationServSpeechResp = new SpeechResponse();
     var speechOutput = new Speech();
     var repromptOutput = new Speech();
