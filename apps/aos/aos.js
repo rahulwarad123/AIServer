@@ -2099,7 +2099,7 @@ function getFinalAgentFindSendEmailResponse(sessionAttrs) {
     Utilities.sendEmail(to, subject, body)
         .then(function (emailStatus) {
             if (emailStatus) {
-                finalSpeechOutput.text = Utilities.GetRandomValue(EMAILSENTRESPAGENT) + "Thank you, for choosing Allstate.";
+                finalSpeechOutput.text = Utilities.GetRandomValue(EMAILSENTRESPAGENT) + " Thank you, for choosing Allstate.";
             } else {
                 finalSpeechOutput.text = "Sorry! there was a problem while sending the email to you. Please try again later.";
             }
