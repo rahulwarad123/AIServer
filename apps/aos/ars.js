@@ -276,7 +276,7 @@ function askKeyLocation(sessionAttrs) {
     var locationServSpeechResp = new SpeechResponse();
     var speechOutput = new Speech();
     var repromptOutput = new Speech();
-    speechOutput.text = "Where are your keys? In your car? or Lost? or Broken?";
+    speechOutput.text = "Sure I can assist you with that. Where are your keys? In your car? or Lost? or Broken?";
     repromptOutput.text = speechOutput.text;
     locationServSpeechResp.speechOutput = speechOutput;
     locationServSpeechResp.repromptOutput = repromptOutput;
