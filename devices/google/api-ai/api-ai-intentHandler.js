@@ -1930,7 +1930,7 @@ function getARSSessionAttributes(contextInfo) {
         var vehicleLocation = contextInfo.parameters["location.original"];
         if (vehicleLocation && vehicleLocation.trim().length > 0) {
             sessionAttrs.vehicleLocation = contextInfo.parameters["location"];
-            if (sessionAttrs.vehicleLocation.toUpperCase() === 'CURRENT') {
+            if (sessionAttrs.vehicleLocation.trim().toUpperCase() === 'CURRENT') {
                 sessionAttrs.vehicleLocation = "1500 Capitol Drive, Northbrook, IL 60060";
             }
         }
