@@ -1901,7 +1901,7 @@ function handleARSLockServiceYes(body, deferred) {
     var result = body.result;
     var agFindCntx = result.contexts.find(function (curCntx) { return curCntx.name === "ars"; });
     var sessionAttrs = getARSSessionAttributes(agFindCntx);
-    arsSpeechResp.speech = "Sure I can assist you with that.Where are your keys? In your car? or Lost? or Broken?";
+    arsSpeechResp.speech = "Sure I can assist you with that. Where are your keys? In your car? or Lost? or Broken?";
     arsSpeechResp.displayText = "Where are your keys? In your car? or Lost? or Broken?";
     deferred.resolve(arsSpeechResp);    
     return deferred.promise;
