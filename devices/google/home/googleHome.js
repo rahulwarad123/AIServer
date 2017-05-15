@@ -42,13 +42,16 @@ function getCurrentLocationPermissionObject(respData) {
 }
 function getreprompObject(respData) {
     var repromts_Object = {
-        "no_input_prompts": [
-            
+        "google": {
+            "expect_user_response": true,
+            "is_ssml": true,
+            "no_input_prompts": [            
             { 
                 text_to_speech: "sorry! i missed that please try again!"
-            }
-           
+            }           
         ]
+        }
+        
           
 }
 return repromts_Object;
