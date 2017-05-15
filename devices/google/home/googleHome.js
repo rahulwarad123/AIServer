@@ -17,6 +17,8 @@ GoogleHome.prototype.processResponse = function (body, respData) {
             default:
                 break;
         }
+        var repromts_Object = getreprompObject(respData);
+        respData.data = repromts_Object;
 
 
     }
@@ -38,6 +40,21 @@ function getCurrentLocationPermissionObject(respData) {
     }
     return permission_object;
 }
+function getreprompObject(respData) {
+    var repromts_Object = {
+        "no_input_prompts": [
+            
+            { 
+                text_to_speech: "sorry! i missed that please try again!"
+            }
+           
+        ]
+          
+}
+return repromts_Object;
+
+}
+
 
 
 module.exports = new GoogleHome();
