@@ -1456,17 +1456,27 @@ function getAOSRentersSessionAttributes(contextInfo) {
         if (addrLine1 && addrLine1.trim().length > 0) {
             sessionAttrs.addrLine1 = contextInfo.parameters["address"];
         }
-        var city = contextInfo.parameters["geo-city.original"] || contextInfo.device.location.city;
+       var city = contextInfo.parameters["geo-city.original"];
         if (city && city.trim().length > 0) {
-            sessionAttrs.city = contextInfo.parameters["geo-city"] || city;
+            sessionAttrs.city = contextInfo.parameters["geo-city"];
         }
-        var zip = contextInfo.parameters["zip.original"] || contextInfo.device.location.zip_code;
+        
+        var zip = contextInfo.parameters["zip.original"];
         if (zip && zip.trim().length > 0) {
-            sessionAttrs.zip = contextInfo.parameters["zip"] || zip;
+            sessionAttrs.zip = contextInfo.parameters["zip"];
             if (sessionAttrs.zip.length === 4) {
                 sessionAttrs.zip = "0" + sessionAttrs.zip;
             }
         }
+	var currentCity = contextInfo.device.location.city;   
+	    if(currentCity){
+		 sessionAttrs.city = currentCity; 
+	    }   
+	 var currentZip = contextInfo.device.location.zip_code;   
+	    if(currentZip){
+		 sessionAttrs.zip = currentZip; 
+	    }          
+        
         if (newaddrLine1 && newaddrLine1.trim().length > 0) {
             sessionAttrs.newaddrLine1 = contextInfo.parameters["newaddress"];
         }
