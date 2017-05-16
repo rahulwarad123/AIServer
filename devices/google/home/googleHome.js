@@ -19,8 +19,8 @@ GoogleHome.prototype.processResponse = function (body, respData) {
             default:
                 break;
         }
-        var repromts_Object = getreprompObject(respData);
-        respData.data = repromts_Object;
+        //var repromts_Object = getreprompObject(respData);
+        //respData.data = repromts_Object;
 
 
     }
