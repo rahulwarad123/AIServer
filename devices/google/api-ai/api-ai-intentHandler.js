@@ -523,11 +523,7 @@ function getPermissionSeekingIntent(body) {
 
 function getDeviceZipcode(body) {
     if (body.originalRequest.data.device) {
-	var rentersCntx = body.result.contexts.find(function (curCntx) { return curCntx.name === "renters"; });
-        if(!rentersCntx.city && !rentersCntx.zip){
-        rentersCntx.zip = body.originalRequest.data.device.location.zip_code;
-        rentersCntx.city = body.originalRequest.data.device.location.city;
-        }
+	
         return body.originalRequest.data.device.location.zip_code;
     }
 }
@@ -586,7 +582,13 @@ function handlerAOSRentersInsuranceAddr(body, deferred) {
     var rentersWelcomeSpeechResp = {};
     var result = body.result;
     var rentersCntx = result.contexts.find(function (curCntx) { return curCntx.name === "renters"; });
-    var sessionAttrs = getAOSRentersSessionAttributes(rentersCntx);	
+    var sessionAttrs = getAOSRentersSessionAttributes(rentersCntx);
+	 if(!sessionAttrs.city && !sessionAttrs.zip)
+    {
+       sessionAttrs.city = body.originalRequest.data.device.location.city;
+       sessionAttrs.zip = body.originalRequest.data.device.location.zip_code;
+    }
+	console.log(sessionAttrs);
 
     aos.handleRentersInsuranceAddr(sessionAttrs)
         .then(function (renterspeechResponse) {
