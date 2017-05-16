@@ -130,14 +130,15 @@ function intentHandlers(body) {
                 .then(function (responseInfo) {
                     deferred.resolve(responseInfo);
                 });
-            break;		    
+            break;
+	case "AOS-RENTERS-CURADDR-LOC-YES":
         case "AOS-RENTERS-CURADDR":
             handlerAOSRentersInsuranceAddr(body, deferred)
                 .then(function (responseInfo) {
                     deferred.resolve(responseInfo);
                 });
             break;
-	case "AOS-RENTERS-CURADDR-LOC-YES":
+	
         case "AOS-RENTERS-CURADDR-LOC":
             handlerAOSRentersInsuranceAddrCurLoc(body, deferred)
                 .then(function (responseInfo) {
