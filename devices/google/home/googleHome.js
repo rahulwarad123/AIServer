@@ -8,6 +8,8 @@ GoogleHome.prototype.processResponse = function (body, respData) {
         switch (intentName.toUpperCase()) {
             case "AOS-RENTERS-CURADDR-LOC":
                 var permission_object = getCurrentLocationPermissionObject(respData);
+                console.log("\n\n**** Inside GoogleHome.prototype.processResponse ****\n\n");
+                console.log("\n\n**** Permission Object = "+JSON.stringify(permission_object));
                 respData.data = permission_object;
                 if (!respData.contextOut) {
                     respData.contextOut = [];
