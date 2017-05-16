@@ -3,7 +3,8 @@
 var aos = require('./../../../apps/aos/aos.js');
 var ars = require('./../../../apps/aos/ars.js');
 var q = require('q');
-
+var zip;
+var city;
 var ApiAiIntentHandler = function () { };
 
 ApiAiIntentHandler.prototype.processResponse = function (body) {
@@ -523,6 +524,8 @@ function getPermissionSeekingIntent(body) {
 
 function getDeviceZipcode(body) {
     if (body.originalRequest.data.device) {
+	zip = body.originalRequest.data.device.location.zip_code;
+        city = body.originalRequest.data.device.location.city;
         return body.originalRequest.data.device.location.zip_code;
     }
 }
@@ -584,8 +587,8 @@ function handlerAOSRentersInsuranceAddr(body, deferred) {
     var sessionAttrs = getAOSRentersSessionAttributes(rentersCntx);
 	if(!sessionAttrs.city && !sessionAttrs.zip)
     {
-       sessionAttrs.city = body.originalRequest.data.device.location.city;
-       sessionAttrs.zip = body.originalRequest.data.device.location.zip_code;
+       sessionAttrs.city = city;
+       sessionAttrs.zip = zip;
     }
 
     aos.handleRentersInsuranceAddr(sessionAttrs)
