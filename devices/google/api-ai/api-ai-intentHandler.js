@@ -582,6 +582,11 @@ function handlerAOSRentersInsuranceAddr(body, deferred) {
     var result = body.result;
     var rentersCntx = result.contexts.find(function (curCntx) { return curCntx.name === "renters"; });
     var sessionAttrs = getAOSRentersSessionAttributes(rentersCntx);
+	if(!sessionAttrs.city && !sessionAttrs.zip)
+    {
+       sessionAttrs.city = body.originalRequest.data.device.location.city;
+       sessionAttrs.zip = body.originalRequest.data.device.location.zip_code;
+    }
 
     aos.handleRentersInsuranceAddr(sessionAttrs)
         .then(function (renterspeechResponse) {
@@ -1468,14 +1473,7 @@ function getAOSRentersSessionAttributes(contextInfo) {
                 sessionAttrs.zip = "0" + sessionAttrs.zip;
             }
         }
-	var currentCity = contextInfo.device.location.city;   
-	    if(currentCity){
-		 sessionAttrs.city = currentCity; 
-	    }   
-	 var currentZip = contextInfo.device.location.zip_code;   
-	    if(currentZip){
-		 sessionAttrs.zip = currentZip; 
-	    }          
+	        
         
         if (newaddrLine1 && newaddrLine1.trim().length > 0) {
             sessionAttrs.newaddrLine1 = contextInfo.parameters["newaddress"];
