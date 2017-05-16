@@ -130,15 +130,22 @@ function intentHandlers(body) {
                 .then(function (responseInfo) {
                     deferred.resolve(responseInfo);
                 });
-            break;
+            break;		    
         case "AOS-RENTERS-CURADDR":
             handlerAOSRentersInsuranceAddr(body, deferred)
                 .then(function (responseInfo) {
                     deferred.resolve(responseInfo);
                 });
             break;
+	case "AOS-RENTERS-CURADDR-LOC-YES":
         case "AOS-RENTERS-CURADDR-LOC":
             handlerAOSRentersInsuranceAddrCurLoc(body, deferred)
+                .then(function (responseInfo) {
+                    deferred.resolve(responseInfo);
+                });
+            break;
+	 case "AOS-RENTERS-CURADDR-LOC-NO":
+             handlerAOSRentersInsuranceAddrCurLocNo(body, deferred)
                 .then(function (responseInfo) {
                     deferred.resolve(responseInfo);
                 });
@@ -1243,6 +1250,13 @@ function handlerAOSRentersInsuranceAddrCurLoc(body, deferred) {
         rentersSpeechResp.contextOut = [];
     }
     rentersSpeechResp.contextOut.push({ "name": "PermissionSeekingIntent", "parameters": { "IntentName": "AOS-RENTERS-CURADDR-LOC" } });
+    deferred.resolve(rentersSpeechResp);
+    return deferred.promise;
+}
+function handlerAOSRentersInsuranceAddrCurLocNo(body, deferred) {
+    var rentersSpeechResp = {};
+    rentersSpeechResp.speech = "Request aborted , still you can find agent in manual way";
+    rentersSpeechResp.displayText = "Request aborted , still you can find agent in manual way";
     deferred.resolve(rentersSpeechResp);
     return deferred.promise;
 }
