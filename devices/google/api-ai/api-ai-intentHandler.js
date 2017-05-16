@@ -3,8 +3,7 @@
 var aos = require('./../../../apps/aos/aos.js');
 var ars = require('./../../../apps/aos/ars.js');
 var q = require('q');
-var zip;
-var city;
+
 var ApiAiIntentHandler = function () { };
 
 ApiAiIntentHandler.prototype.processResponse = function (body) {
@@ -524,8 +523,11 @@ function getPermissionSeekingIntent(body) {
 
 function getDeviceZipcode(body) {
     if (body.originalRequest.data.device) {
-	zip = body.originalRequest.data.device.location.zip_code;
-        city = body.originalRequest.data.device.location.city;
+	var rentersCntx = body.result.contexts.find(function (curCntx) { return curCntx.name === "renters"; });
+        if(!rentersCntx.city && !rentersCntx.zip){
+        rentersCntx.zip = body.originalRequest.data.device.location.zip_code;
+        rentersCntx.city = body.originalRequest.data.device.location.city;
+        }
         return body.originalRequest.data.device.location.zip_code;
     }
 }
@@ -584,12 +586,7 @@ function handlerAOSRentersInsuranceAddr(body, deferred) {
     var rentersWelcomeSpeechResp = {};
     var result = body.result;
     var rentersCntx = result.contexts.find(function (curCntx) { return curCntx.name === "renters"; });
-    var sessionAttrs = getAOSRentersSessionAttributes(rentersCntx);
-	if(!sessionAttrs.city && !sessionAttrs.zip)
-    {
-       sessionAttrs.city = city;
-       sessionAttrs.zip = zip;
-    }
+    var sessionAttrs = getAOSRentersSessionAttributes(rentersCntx);	
 
     aos.handleRentersInsuranceAddr(sessionAttrs)
         .then(function (renterspeechResponse) {
