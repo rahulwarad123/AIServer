@@ -604,6 +604,8 @@ function handlerAOSRentersInsuranceAddr(body, deferred) {
             rentersCntx.parameters["geo-city"] = devicecity;
             rentersCntx.parameters["zip.original"] = deviceZipCode;
             rentersCntx.parameters["zip"] = deviceZipCode;
+	    sessionAttrs.city = body.originalRequest.data.device.location.city;
+        sessionAttrs.zip = body.originalRequest.data.device.location.zip_code;
 
     }
 	 
