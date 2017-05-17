@@ -596,6 +596,16 @@ function handlerAOSRentersInsuranceAddr(body, deferred) {
     var result = body.result;
     var rentersCntx = result.contexts.find(function (curCntx) { return curCntx.name === "renters"; });
     var sessionAttrs = getAOSRentersSessionAttributes(rentersCntx);
+	if(!sessionAttrs.city && !sessionAttrs.zip)
+    {
+        var deviceZipCode = getDeviceZipcode(body);
+         var devicecity = getDeviceCity(body);
+        rentersCntx.parameters["geo-city.original"] = devicecity;
+            rentersCntx.parameters["geo-city"] = devicecity;
+            rentersCntx.parameters["zip.original"] = deviceZipCode;
+            rentersCntx.parameters["zip"] = deviceZipCode;
+
+    }
 	 
 
     aos.handleRentersInsuranceAddr(sessionAttrs)
