@@ -482,6 +482,12 @@ function handleGetLocationPermission(body, deferred, pemissionGranted) {
         if (permissionSeekingIntent) {
             var intentName = permissionSeekingIntent.parameters.IntentName;
             var deviceZipCode = getDeviceZipcode(body);
+	    var devicecity = getDeviceCity(body);
+            var rentersCntx = body.result.contexts.find(function (curCntx) { return curCntx.name === "renters"; });
+	    rentersCntx.parameters["geo-city.original"] = devicecity;
+            rentersCntx.parameters["geo-city"] = devicecity;
+            rentersCntx.parameters["zip.original"] = deviceZipCode;
+            rentersCntx.parameters["zip"] = deviceZipCode;
             processPermissionSeekingIntent(body, deferred, deviceZipCode, intentName)
                 .then(function (responseInfo) {
                     deferred.resolve(responseInfo);
@@ -527,6 +533,12 @@ function getDeviceZipcode(body) {
         return body.originalRequest.data.device.location.zip_code;
     }
 }
+function getDeviceCity(body) {
+    if (body.originalRequest.data.device) {
+        return body.originalRequest.data.device.location.city;
+    }
+}
+
 //#endregion
 
 //#region Renters insurance
@@ -583,12 +595,7 @@ function handlerAOSRentersInsuranceAddr(body, deferred) {
     var result = body.result;
     var rentersCntx = result.contexts.find(function (curCntx) { return curCntx.name === "renters"; });
     var sessionAttrs = getAOSRentersSessionAttributes(rentersCntx);
-	 if(!sessionAttrs.city && !sessionAttrs.zip)
-    {
-       sessionAttrs.city = body.originalRequest.data.device.location.city;
-       sessionAttrs.zip = body.originalRequest.data.device.location.zip_code;
-    }
-	console.log(sessionAttrs);
+	 
 
     aos.handleRentersInsuranceAddr(sessionAttrs)
         .then(function (renterspeechResponse) {
