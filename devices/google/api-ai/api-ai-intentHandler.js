@@ -131,7 +131,7 @@ function intentHandlers(body) {
                     deferred.resolve(responseInfo);
                 });
             break;
-	case "AOS-RENTERS-CURADDR-LOC-YES":
+	
         case "AOS-RENTERS-CURADDR":
             handlerAOSRentersInsuranceAddr(body, deferred)
                 .then(function (responseInfo) {
@@ -443,7 +443,7 @@ function intentHandlers(body) {
                     deferred.resolve(responseInfo);
                 });
             break;
-
+        case "AOS-RENTERS-CURADDR-LOC-YES":
         case "GET-LOCATION-PERMISSION":
             var permissionGranted = isPermissionGranted(body);
             handleGetLocationPermission(body, deferred, permissionGranted)
@@ -488,6 +488,7 @@ function handleGetLocationPermission(body, deferred, pemissionGranted) {
             rentersCntx.parameters["geo-city"] = devicecity;
             rentersCntx.parameters["zip.original"] = deviceZipCode;
             rentersCntx.parameters["zip"] = deviceZipCode;
+		console.log("@@@@@@@@@@");
             processPermissionSeekingIntent(body, deferred, deviceZipCode, intentName)
                 .then(function (responseInfo) {
                     deferred.resolve(responseInfo);
