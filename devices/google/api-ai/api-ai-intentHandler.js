@@ -613,9 +613,12 @@ function handlerAOSRentersInsuranceAddr(body, deferred) {
             rentersCntx.parameters["zip"] = deviceZipCode;
             rentersCntx.parameters["address.original"] = deviceaddress;
             rentersCntx.parameters["address"] = deviceaddress;
-       sessionAttrs.city = devicecity;
+       sessionAttrs.city =devicecity;
+       sessionAttrs["geo-city.original"] = devicecity;       
         sessionAttrs.zip = deviceZipCode;
+        sessionAttrs["zip.original"] = deviceZipCode;
          sessionAttrs.addrLine1 = deviceaddress;
+          sessionAttrs["address.original"] = deviceaddress;
 
     }
 	 
