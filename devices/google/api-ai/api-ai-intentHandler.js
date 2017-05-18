@@ -540,6 +540,12 @@ function getDeviceCity(body) {
     }
 }
 
+function getDeviceAddress(body) {
+    if (body.originalRequest.data.device) {
+        return body.originalRequest.data.device.location.formatted_addresss;
+    }
+}
+
 //#endregion
 
 //#region Renters insurance
@@ -598,14 +604,18 @@ function handlerAOSRentersInsuranceAddr(body, deferred) {
     var sessionAttrs = getAOSRentersSessionAttributes(rentersCntx);
 	if(!sessionAttrs.city && !sessionAttrs.zip)
     {
-        var deviceZipCode = getDeviceZipcode(body);
+         var deviceZipCode = getDeviceZipcode(body);
          var devicecity = getDeviceCity(body);
+         var deviceaddress = getDeviceAddress(body);
         rentersCntx.parameters["geo-city.original"] = devicecity;
             rentersCntx.parameters["geo-city"] = devicecity;
             rentersCntx.parameters["zip.original"] = deviceZipCode;
             rentersCntx.parameters["zip"] = deviceZipCode;
-	    sessionAttrs.city = body.originalRequest.data.device.location.city;
+            rentersCntx.parameters["address.original"] = deviceZipCode;
+            rentersCntx.parameters["address"] = deviceZipCode;
+       sessionAttrs.city = body.originalRequest.data.device.location.city;
         sessionAttrs.zip = body.originalRequest.data.device.location.zip_code;
+         sessionAttrs.address1 = body.originalRequest.data.device.location.formatted_addresss;
 
     }
 	 
