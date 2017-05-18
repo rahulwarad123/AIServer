@@ -611,8 +611,8 @@ function handlerAOSRentersInsuranceAddr(body, deferred) {
             rentersCntx.parameters["geo-city"] = devicecity;
             rentersCntx.parameters["zip.original"] = deviceZipCode;
             rentersCntx.parameters["zip"] = deviceZipCode;
-            rentersCntx.parameters["address.original"] = deviceZipCode;
-            rentersCntx.parameters["address"] = deviceZipCode;
+            rentersCntx.parameters["address.original"] = deviceaddress;
+            rentersCntx.parameters["address"] = deviceaddress;
        sessionAttrs.city = body.originalRequest.data.device.location.city;
         sessionAttrs.zip = body.originalRequest.data.device.location.zip_code;
          sessionAttrs.address1 = body.originalRequest.data.device.location.formatted_addresss;
@@ -624,6 +624,7 @@ function handlerAOSRentersInsuranceAddr(body, deferred) {
         .then(function (renterspeechResponse) {
             rentersWelcomeSpeechResp.speech = renterspeechResponse.speechOutput.text;
             rentersWelcomeSpeechResp.displayText = renterspeechResponse.speechOutput.text;
+	    rentersWelcomeSpeechResp.contextOut = [{ "name": "renters", "parameters": sessionAttrs }];
             deferred.resolve(rentersWelcomeSpeechResp);
         });
 
