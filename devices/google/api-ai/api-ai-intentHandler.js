@@ -537,7 +537,7 @@ function getDeviceCity(body) {
 
 function getDeviceAddress(body) {
     if (body.originalRequest.data.device) {
-        return body.originalRequest.data.device.location.formatted_addresss;
+        return body.originalRequest.data.device.location.address;
     }
 }
 
