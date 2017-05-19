@@ -483,12 +483,7 @@ function handleGetLocationPermission(body, deferred, pemissionGranted) {
             var intentName = permissionSeekingIntent.parameters.IntentName;
             var deviceZipCode = getDeviceZipcode(body);
 	    var devicecity = getDeviceCity(body);
-            var rentersCntx = body.result.contexts.find(function (curCntx) { return curCntx.name === "renters"; });
-	    rentersCntx.parameters["geo-city.original"] = devicecity;
-            rentersCntx.parameters["geo-city"] = devicecity;
-            rentersCntx.parameters["zip.original"] = deviceZipCode;
-            rentersCntx.parameters["zip"] = deviceZipCode;
-		console.log("@@@@@@@@@@");
+            
             processPermissionSeekingIntent(body, deferred, deviceZipCode, intentName)
                 .then(function (responseInfo) {
                     deferred.resolve(responseInfo);
@@ -597,31 +592,32 @@ function handlerAOSRentersInsuranceDOB(body, deferred) {
     return deferred.promise;
 }
 
+function getLocationAttributes(body, sessionAttrs)
+{
+  if(!sessionAttrs.city && !sessionAttrs.zip)
+    {
+        var deviceZipCode = getDeviceZipcode(body);
+         var devicecity = getDeviceCity(body);
+         var deviceaddress = getDeviceAddress(body);  
+         sessionAttrs.addrLine1 = deviceaddress;
+          sessionAttrs["address.original"] = deviceaddress;
+          sessionAttrs["address"] = deviceaddress;      
+       sessionAttrs.city = body.originalRequest.data.device.location.city;
+       sessionAttrs["geo-city.original"] = devicecity;  
+       sessionAttrs["geo-city"] = devicecity;       
+        sessionAttrs.zip = body.originalRequest.data.device.location.zip_code;
+        sessionAttrs["zip.original"] = deviceZipCode;
+         
+    }
+    return sessionAttrs;
+}
+
 function handlerAOSRentersInsuranceAddr(body, deferred) {
     var rentersWelcomeSpeechResp = {};
     var result = body.result;
     var rentersCntx = result.contexts.find(function (curCntx) { return curCntx.name === "renters"; });
     var sessionAttrs = getAOSRentersSessionAttributes(rentersCntx);
-	if(!sessionAttrs.city && !sessionAttrs.zip)
-    {
-         var deviceZipCode = getDeviceZipcode(body);
-         var devicecity = getDeviceCity(body);
-         var deviceaddress = getDeviceAddress(body);
-        rentersCntx.parameters["geo-city.original"] = devicecity;
-            rentersCntx.parameters["geo-city"] = devicecity;
-            rentersCntx.parameters["zip.original"] = deviceZipCode;
-            rentersCntx.parameters["zip"] = deviceZipCode;
-            rentersCntx.parameters["address.original"] = deviceaddress;
-            rentersCntx.parameters["address"] = deviceaddress;
-       sessionAttrs.city =devicecity;
-       sessionAttrs["geo-city.original"] = devicecity;       
-        sessionAttrs.zip = deviceZipCode;
-        sessionAttrs["zip.original"] = deviceZipCode;
-         sessionAttrs.addrLine1 = deviceaddress;
-          sessionAttrs["address.original"] = deviceaddress;
-
-    }
-	 
+    sessionAttrs = getLocationAttributes(body, sessionAttrs); 
 
     aos.handleRentersInsuranceAddr(sessionAttrs)
         .then(function (renterspeechResponse) {
