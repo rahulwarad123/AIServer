@@ -599,9 +599,9 @@ function getLocationAttributes(body, sessionAttrs)
         var deviceZipCode = getDeviceZipcode(body);
          var devicecity = getDeviceCity(body);
          var deviceaddress = getDeviceAddress(body);  
-         sessionAttrs.addrLine1 = deviceaddress;
-          sessionAttrs["address.original"] = deviceaddress;
-          sessionAttrs["address"] = deviceaddress;      
+         sessionAttrs.addrLine1 = "abc";
+          sessionAttrs["address.original"] = "abc";
+          sessionAttrs["address"] = "abc";      
        sessionAttrs.city = body.originalRequest.data.device.location.city;
        sessionAttrs["geo-city.original"] = devicecity;  
        sessionAttrs["geo-city"] = devicecity;       
