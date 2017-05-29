@@ -687,8 +687,8 @@ function handlerAOSRentersPhoneWhy(body, deferred) {
     var rentersCntx = result.contexts.find(function (curCntx) { return curCntx.name === "renters"; });
     var sessionAttrs = getAOSRentersSessionAttributes(rentersCntx);
 
-    rentersWelcomeSpeechResp.speech = " We ask for your phone number so that we can contact you to answer any questions you may have or to help you finalize your quote. So Please provide your phone number";
-    rentersWelcomeSpeechResp.displayText = helpSpeechResp.speech;
+    rentersWelcomeSpeechResp.speech = " We ask for your phone number so that we can contact you to answer any questions you may have or to help you finalize your quote.";
+    rentersWelcomeSpeechResp.displayText = rentersWelcomeSpeechResp.speech;
     deferred.resolve(rentersWelcomeSpeechResp);
     return deferred.promise;
 }
@@ -745,8 +745,8 @@ function handlerAOSRentersEmailAddressWhy(body, deferred) {
     var rentersCntx = result.contexts.find(function (curCntx) { return curCntx.name === "renters"; });
     var sessionAttrs = getAOSRentersSessionAttributes(rentersCntx);
 
-    rentersWelcomeSpeechResp.speech = " We ask for your email so that we can email your saved quote if you need to return to it later.So please provide your email address";
-    rentersWelcomeSpeechResp.displayText = helpSpeechResp.speech;
+    rentersWelcomeSpeechResp.speech = " We ask for your email so that we can email your saved quote if you need to return to it later.";
+    rentersWelcomeSpeechResp.displayText = rentersWelcomeSpeechResp.speech;
     deferred.resolve(rentersWelcomeSpeechResp);
     return deferred.promise;
 }
@@ -839,8 +839,8 @@ function handlerAOSRentersEmpStatusWhy(body, deferred) {
     var rentersCntx = result.contexts.find(function (curCntx) { return curCntx.name === "renters"; });
     var sessionAttrs = getAOSRentersSessionAttributes(rentersCntx);
 
-    rentersWelcomeSpeechResp.speech = " We ask for employment Status to make sure you qualify for the best rates.So please provide your employment Status like Are you employed, self employed, unemployed, student, retired, home maker or military";
-    rentersWelcomeSpeechResp.displayText = helpSpeechResp.speech;
+    rentersWelcomeSpeechResp.speech = " We ask for employment Status to make sure you qualify for the best rates.";
+    rentersWelcomeSpeechResp.displayText = rentersWelcomeSpeechResp.speech;
     deferred.resolve(rentersWelcomeSpeechResp);
     return deferred.promise;
 }
