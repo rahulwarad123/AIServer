@@ -557,8 +557,7 @@ function getDeviceCity(body) {
 
 function getDeviceAddress(body) {
     if (body.originalRequest.data.device) {
-        console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@inside addresss@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-        return body.originalRequest.data.device.location.formatted_address;
+                return body.originalRequest.data.device.location.formatted_address;
     }
 }
 
