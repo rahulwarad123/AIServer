@@ -40,7 +40,7 @@ function intentHandlers(body) {
                     deferred.resolve(responseInfo);
                 });
             break;
-		case "AGENT-FIND":
+        case "AGENT-FIND":
             handleAgentFindIntent(body, deferred)
                 .then(function (responseInfo) {
                     deferred.resolve(responseInfo);
@@ -72,14 +72,14 @@ function intentHandlers(body) {
                     deferred.resolve(responseInfo);
                 });
             break;
-		case "ARS-SERVICE-START":
+        case "ARS-SERVICE-START":
         case "ARS-SERVICE-LOCATION":
             handleARSStartIntent(body, deferred)
                 .then(function (responseInfo) {
                     deferred.resolve(responseInfo);
                 });
             break;
-	case "ARS-LOCKOUT-SERVICE-YES":
+        case "ARS-LOCKOUT-SERVICE-YES":
             handleARSLockServiceYes(body, deferred)
                 .then(function (responseInfo) {
                     deferred.resolve(responseInfo);
@@ -131,28 +131,34 @@ function intentHandlers(body) {
                     deferred.resolve(responseInfo);
                 });
             break;
-	case "AOS-RENTERS-CURADDR-LOC-YES":
+        case "AOS-RENTERS-CURADDR-LOC-YES":
         case "AOS-RENTERS-CURADDR":
             handlerAOSRentersInsuranceAddr(body, deferred)
                 .then(function (responseInfo) {
                     deferred.resolve(responseInfo);
                 });
             break;
-	
+
         case "AOS-RENTERS-CURADDR-LOC":
             handlerAOSRentersInsuranceAddrCurLoc(body, deferred)
                 .then(function (responseInfo) {
                     deferred.resolve(responseInfo);
                 });
             break;
-	 case "AOS-RENTERS-CURADDR-LOC-NO":
-             handlerAOSRentersInsuranceAddrCurLocNo(body, deferred)
+        case "AOS-RENTERS-CURADDR-LOC-NO":
+            handlerAOSRentersInsuranceAddrCurLocNo(body, deferred)
                 .then(function (responseInfo) {
                     deferred.resolve(responseInfo);
                 });
             break;
         case "AOS-RENTERS-CURCITY-ZIP":
             handlerAOSRentersInsuranceCityZip(body, deferred)
+                .then(function (responseInfo) {
+                    deferred.resolve(responseInfo);
+                });
+            break;
+        case "AOS-RENTERS-PHONEWHY":
+            handlerAOSRentersPhoneWhy(body, deferred)
                 .then(function (responseInfo) {
                     deferred.resolve(responseInfo);
                 });
@@ -177,6 +183,13 @@ function intentHandlers(body) {
                     deferred.resolve(responseInfo);
                 });
             break;
+        case "AOS-RENTERS-EMAILADDRESS-WHY":
+            handlerAOSRentersEmailAddressWhy(body, deferred)
+                .then(function (responseInfo) {
+                    deferred.resolve(responseInfo);
+                });
+            break;
+
         case "AOS-RENTERS-INSADDRSAME-YES":
             handlerAOSRentersInsuranceInsuredAddrSame(body, deferred)
                 .then(function (responseInfo) {
@@ -216,6 +229,12 @@ function intentHandlers(body) {
             break;
         case "AOS-RENTERS-EMPSTATUS":
             handlerAOSRentersEmpStatus(body, deferred)
+                .then(function (responseInfo) {
+                    deferred.resolve(responseInfo);
+                });
+            break;
+            case "AOS-RENTERS-EMPSTATUS-WHY":
+            handlerAOSRentersEmpStatusWhy(body, deferred)
                 .then(function (responseInfo) {
                     deferred.resolve(responseInfo);
                 });
@@ -443,7 +462,8 @@ function intentHandlers(body) {
                     deferred.resolve(responseInfo);
                 });
             break;
-        
+
+
         case "GET-LOCATION-PERMISSION":
             var permissionGranted = isPermissionGranted(body);
             handleGetLocationPermission(body, deferred, permissionGranted)
@@ -482,8 +502,8 @@ function handleGetLocationPermission(body, deferred, pemissionGranted) {
         if (permissionSeekingIntent) {
             var intentName = permissionSeekingIntent.parameters.IntentName;
             var deviceZipCode = getDeviceZipcode(body);
-	    var devicecity = getDeviceCity(body);
-            
+            var devicecity = getDeviceCity(body);
+
             processPermissionSeekingIntent(body, deferred, deviceZipCode, intentName)
                 .then(function (responseInfo) {
                     deferred.resolve(responseInfo);
@@ -525,7 +545,7 @@ function getPermissionSeekingIntent(body) {
 
 function getDeviceZipcode(body) {
     if (body.originalRequest.data.device) {
-	
+
         return body.originalRequest.data.device.location.zip_code;
     }
 }
@@ -537,7 +557,7 @@ function getDeviceCity(body) {
 
 function getDeviceAddress(body) {
     if (body.originalRequest.data.device) {
-	    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@inside addresss@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@inside addresss@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         return body.originalRequest.data.device.location.formatted_address;
     }
 }
@@ -593,22 +613,20 @@ function handlerAOSRentersInsuranceDOB(body, deferred) {
     return deferred.promise;
 }
 
-function getLocationAttributes(body, sessionAttrs)
-{
-  if(!sessionAttrs.city && !sessionAttrs.zip)
-    {
+function getLocationAttributes(body, sessionAttrs) {
+    if (!sessionAttrs.city && !sessionAttrs.zip) {
         var deviceZipCode = getDeviceZipcode(body);
-         var devicecity = getDeviceCity(body);
-         var deviceaddress = getDeviceAddress(body);  
-         sessionAttrs.addrLine1 = deviceaddress;
-          sessionAttrs["address.original"] = deviceaddress;
-          sessionAttrs["address"] = deviceaddress;      
-       sessionAttrs.city = body.originalRequest.data.device.location.city;
-       sessionAttrs["geo-city.original"] = devicecity;  
-       sessionAttrs["geo-city"] = devicecity;       
+        var devicecity = getDeviceCity(body);
+        var deviceaddress = getDeviceAddress(body);
+        sessionAttrs.addrLine1 = deviceaddress;
+        sessionAttrs["address.original"] = deviceaddress;
+        sessionAttrs["address"] = deviceaddress;
+        sessionAttrs.city = body.originalRequest.data.device.location.city;
+        sessionAttrs["geo-city.original"] = devicecity;
+        sessionAttrs["geo-city"] = devicecity;
         sessionAttrs.zip = body.originalRequest.data.device.location.zip_code;
         sessionAttrs["zip.original"] = deviceZipCode;
-         
+
     }
     return sessionAttrs;
 }
@@ -618,13 +636,13 @@ function handlerAOSRentersInsuranceAddr(body, deferred) {
     var result = body.result;
     var rentersCntx = result.contexts.find(function (curCntx) { return curCntx.name === "renters"; });
     var sessionAttrs = getAOSRentersSessionAttributes(rentersCntx);
-    sessionAttrs = getLocationAttributes(body, sessionAttrs); 
+    sessionAttrs = getLocationAttributes(body, sessionAttrs);
 
     aos.handleRentersInsuranceAddr(sessionAttrs)
         .then(function (renterspeechResponse) {
             rentersWelcomeSpeechResp.speech = renterspeechResponse.speechOutput.text;
             rentersWelcomeSpeechResp.displayText = renterspeechResponse.speechOutput.text;
-	    rentersWelcomeSpeechResp.contextOut = [{ "name": "renters", "parameters": sessionAttrs }];
+            rentersWelcomeSpeechResp.contextOut = [{ "name": "renters", "parameters": sessionAttrs }];
             deferred.resolve(rentersWelcomeSpeechResp);
         });
 
@@ -663,7 +681,17 @@ function handlerAOSRentersInsuranceInsuredAddrSame(body, deferred) {
 
     return deferred.promise;
 }
+function handlerAOSRentersPhoneWhy(body, deferred) {
+    var rentersWelcomeSpeechResp = {};
+    var result = body.result;
+    var rentersCntx = result.contexts.find(function (curCntx) { return curCntx.name === "renters"; });
+    var sessionAttrs = getAOSRentersSessionAttributes(rentersCntx);
 
+    rentersWelcomeSpeechResp.speech = " We ask for your phone number so that we can contact you to answer any questions you may have or to help you finalize your quote.";
+    rentersWelcomeSpeechResp.displayText = helpSpeechResp.speech;
+    deferred.resolve(rentersWelcomeSpeechResp);
+    return deferred.promise;
+}
 function handlerAOSRentersPhoneNumber(body, deferred) {
     var rentersWelcomeSpeechResp = {};
     var result = body.result;
@@ -710,6 +738,19 @@ function handlerAOSRentersEmailAddress(body, deferred) {
 
     return deferred.promise;
 }
+
+function handlerAOSRentersEmailAddressWhy(body, deferred) {
+    var rentersWelcomeSpeechResp = {};
+    var result = body.result;
+    var rentersCntx = result.contexts.find(function (curCntx) { return curCntx.name === "renters"; });
+    var sessionAttrs = getAOSRentersSessionAttributes(rentersCntx);
+
+    rentersWelcomeSpeechResp.speech = " We ask for your email so that we can email your saved quote if you need to return to it later.";
+    rentersWelcomeSpeechResp.displayText = helpSpeechResp.speech;
+    deferred.resolve(rentersWelcomeSpeechResp);
+    return deferred.promise;
+}
+
 
 function handlerAOSRentersInsuranceInsuredAddrDiff(body, deferred) {
     var rentersWelcomeSpeechResp = {};
@@ -789,6 +830,18 @@ function handlerAOSRentersEmpStatus(body, deferred) {
             deferred.resolve(rentersWelcomeSpeechResp);
         });
 
+    return deferred.promise;
+}
+
+function handlerAOSRentersEmpStatusWhy(body, deferred) {
+    var rentersWelcomeSpeechResp = {};
+    var result = body.result;
+    var rentersCntx = result.contexts.find(function (curCntx) { return curCntx.name === "renters"; });
+    var sessionAttrs = getAOSRentersSessionAttributes(rentersCntx);
+
+    rentersWelcomeSpeechResp.speech = " We ask for employment Status to make sure you qualify for the best rates.";
+    rentersWelcomeSpeechResp.displayText = helpSpeechResp.speech;
+    deferred.resolve(rentersWelcomeSpeechResp);
     return deferred.promise;
 }
 
@@ -1220,11 +1273,11 @@ function handlerAOSRenterValidCustomer(body, deferred) {
     aos.handlerRenterValidCustomer(sessionAttrs)
         .then(function (renterspeechResponse) {
             rentersWelcomeSpeechResp.speech = renterspeechResponse.speechOutput.text;
-            rentersWelcomeSpeechResp.displayText = renterspeechResponse.speechOutput.text; 
-            if(sessionAttrs.isError){
+            rentersWelcomeSpeechResp.displayText = renterspeechResponse.speechOutput.text;
+            if (sessionAttrs.isError) {
                 rentersWelcomeSpeechResp.contextOut = [{ "name": "renters", "parameters": {} }];
-            }   
-            else{
+            }
+            else {
                 rentersWelcomeSpeechResp.contextOut = [{ "name": "renters", "parameters": sessionAttrs }];
             }
             deferred.resolve(rentersWelcomeSpeechResp);
@@ -1258,7 +1311,7 @@ function handlerAOSRenterGenerateURL(body, deferred) {
     aos.handlerRenterGenerateURL(sessionAttrs)
         .then(function (renterspeechResponse) {
             rentersWelcomeSpeechResp.speech = renterspeechResponse.speechOutput.text;
-            rentersWelcomeSpeechResp.displayText = renterspeechResponse.speechOutput.text;            
+            rentersWelcomeSpeechResp.displayText = renterspeechResponse.speechOutput.text;
             deferred.resolve(rentersWelcomeSpeechResp);
         });
 
@@ -1407,14 +1460,17 @@ function getAOSRentersSessionAttributes(contextInfo) {
         "state": undefined,
         "IsInsuredAddrSame": undefined,
         "phoneNumber": undefined,
+        "phonereason": undefined,
         "isAuthorize": undefined,
         "emailAddress": undefined,
+        "EmailReason": undefined,
         "businessoutofresidence": undefined,
         "employmentStatus": undefined,
+        "EmpStatusReason":undefined,
         "unitsInBuilding": undefined,
         "locatedInDormOrMilitaryBarracks": undefined,
         "residenceBuildingType": undefined,
-        "residenceBuildingHomeType" : undefined,
+        "residenceBuildingHomeType": undefined,
         "primaryResidence": undefined,
         "isCurrentAddressSameAsInsuredAddress": undefined,
         "gender": undefined,
@@ -1449,7 +1505,7 @@ function getAOSRentersSessionAttributes(contextInfo) {
         "isResidence2600ftFromCoastVisible": undefined,
         "propertyInsuranceClaims": undefined,
         "isDogAdded": undefined,
-        "isError" :undefined,
+        "isError": undefined,
         "claimLostDate": undefined,
         "claimLostType": undefined,
         "claimLostDescription": undefined,
@@ -1462,8 +1518,8 @@ function getAOSRentersSessionAttributes(contextInfo) {
         "claimLostLocationDisplay": undefined,
         "claimLostLocation": undefined,
         "withInCityLimit": undefined,
-        "constructionType" : undefined,
-        "additionalResidents" : undefined
+        "constructionType": undefined,
+        "additionalResidents": undefined
     };
 
     if (contextInfo) {
@@ -1494,11 +1550,11 @@ function getAOSRentersSessionAttributes(contextInfo) {
         if (addrLine1 && addrLine1.trim().length > 0) {
             sessionAttrs.addrLine1 = contextInfo.parameters["address"];
         }
-       var city = contextInfo.parameters["geo-city.original"];
+        var city = contextInfo.parameters["geo-city.original"];
         if (city && city.trim().length > 0) {
             sessionAttrs.city = contextInfo.parameters["geo-city"];
         }
-        
+
         var zip = contextInfo.parameters["zip.original"];
         if (zip && zip.trim().length > 0) {
             sessionAttrs.zip = contextInfo.parameters["zip"];
@@ -1506,8 +1562,8 @@ function getAOSRentersSessionAttributes(contextInfo) {
                 sessionAttrs.zip = "0" + sessionAttrs.zip;
             }
         }
-	        
-        
+
+
         if (newaddrLine1 && newaddrLine1.trim().length > 0) {
             sessionAttrs.newaddrLine1 = contextInfo.parameters["newaddress"];
         }
@@ -1530,6 +1586,11 @@ function getAOSRentersSessionAttributes(contextInfo) {
         if (phoneNumber && phoneNumber.trim().length > 0) {
             sessionAttrs.phoneNumber = contextInfo.parameters["phone-number"];
         }
+
+        var phonereason = contextInfo.parameters["phonereason.original"];
+        if (phonereason && phonereason.trim().length > 0) {
+            sessionAttrs.phonereason = contextInfo.parameters["phonereason"];
+        }
         var isAuthorize = contextInfo.parameters["isAuthorize.original"];
         if (isAuthorize && isAuthorize.trim().length > 0) {
             sessionAttrs.isAuthorize = contextInfo.parameters["isAuthorize"];
@@ -1538,6 +1599,11 @@ function getAOSRentersSessionAttributes(contextInfo) {
         if (emailAddress && emailAddress.trim().length > 0) {
             sessionAttrs.emailAddress = contextInfo.parameters["email"];
         }
+
+        var EmailReason = contextInfo.parameters["EmailReason.original"];
+        if (EmailReason && EmailReason.trim().length > 0) {
+            sessionAttrs.EmailReason = contextInfo.parameters["EmailReason"];
+        }
         var businessoutofresidence = contextInfo.parameters["isBusinessOperated.original"];
         if (businessoutofresidence && businessoutofresidence.trim().length > 0) {
             sessionAttrs.businessoutofresidence = contextInfo.parameters["isBusinessOperated"];
@@ -1545,6 +1611,11 @@ function getAOSRentersSessionAttributes(contextInfo) {
         var employmentStatus = contextInfo.parameters["aos-renters-employmentType.original"];
         if (employmentStatus && employmentStatus.trim().length > 0) {
             sessionAttrs.employmentStatus = contextInfo.parameters["aos-renters-employmentType"];
+        }
+        
+        var EmpStatusReason = contextInfo.parameters["EmpStatusReason.original"];
+        if (EmpStatusReason && EmpStatusReason.trim().length > 0) {
+            sessionAttrs.EmpStatusReason = contextInfo.parameters["EmpStatusReason"];
         }
         var unitsInBuilding = contextInfo.parameters["isfiveormoreunits.original"];
         if (unitsInBuilding && unitsInBuilding.trim().length > 0) {
@@ -1598,7 +1669,7 @@ function getAOSRentersSessionAttributes(contextInfo) {
         }
         if (contextInfo.parameters.isError) {
             sessionAttrs.isError = contextInfo.parameters.isError;
-        }        
+        }
         if (contextInfo.parameters.isResidenceWithinThousandFtFromCoast) {
             sessionAttrs.isResidenceWithinThousandFtFromCoast = contextInfo.parameters.isResidenceWithinThousandFtFromCoast;
         }
@@ -1959,7 +2030,7 @@ function handleARSLockServiceYes(body, deferred) {
     var sessionAttrs = getARSSessionAttributes(agFindCntx);
     arsSpeechResp.speech = "Sure I can assist you with that. Where are your keys? In your car? or Lost? or Broken?";
     arsSpeechResp.displayText = "Where are your keys? In your car? or Lost? or Broken?";
-    deferred.resolve(arsSpeechResp);    
+    deferred.resolve(arsSpeechResp);
     return deferred.promise;
 }
 
@@ -1974,7 +2045,7 @@ function getARSSessionAttributes(contextInfo) {
         if (serviceType && serviceType.trim().length > 0) {
             sessionAttrs.serviceType = contextInfo.parameters["ars-service-type"];
         }
-	    var islockedout = contextInfo.parameters["lockoutService.original"];
+        var islockedout = contextInfo.parameters["lockoutService.original"];
         if (islockedout && islockedout.trim().length > 0) {
             sessionAttrs.islockedout = contextInfo.parameters["lockoutService"];
         }
@@ -2002,8 +2073,8 @@ function getARSSessionAttributes(contextInfo) {
         if (vehicleModel && vehicleModel.trim().length > 0) {
             sessionAttrs.vehicleModel = contextInfo.parameters["vehicle-model"];
         }
-	    var IsAgree = contextInfo.parameters["IsAgree.original"];
-        if(IsAgree && IsAgree.trim().length > 0){
+        var IsAgree = contextInfo.parameters["IsAgree.original"];
+        if (IsAgree && IsAgree.trim().length > 0) {
             sessionAttrs.IsAgree = contextInfo.parameters["IsAgree"];
         }
     }
