@@ -1311,6 +1311,7 @@ function handlerAOSRenterGenerateURL(body, deferred) {
         .then(function (renterspeechResponse) {
             rentersWelcomeSpeechResp.speech = renterspeechResponse.speechOutput.text;
             rentersWelcomeSpeechResp.displayText = renterspeechResponse.speechOutput.text;
+            rentersWelcomeSpeechResp.contextOut = [{ "name": "renters", "parameters": sessionAttrs }];
             deferred.resolve(rentersWelcomeSpeechResp);
         });
 
@@ -1493,6 +1494,7 @@ function getAOSRentersSessionAttributes(contextInfo) {
         "prevaddrLine1": undefined,
         "isCreditAuthorized": undefined,
         "isgenerateurl": undefined,
+        "retrieveURL":undefined,
         "stateSpecQOneAns": undefined,
         "stateSpecQTwoAns": undefined,
         "stateSpecQThreeAns": undefined,
@@ -1762,6 +1764,10 @@ function getAOSRentersSessionAttributes(contextInfo) {
         var isgenerateurl = contextInfo.parameters["isgenerateurl.original"];
         if (isgenerateurl && isgenerateurl.trim().length > 0) {
             sessionAttrs.isgenerateurl = contextInfo.parameters["isgenerateurl"];
+        }
+         var retrieveURL = contextInfo.parameters["retrieveURL"];
+        if (retrieveURL && retrieveURL.trim().length > 0) {
+            sessionAttrs.retrieveURL = contextInfo.parameters["retrieveURL"];
         }
         var prevcity = contextInfo.parameters["prevcity.original"];
         if (prevcity && prevcity.trim().length > 0) {
