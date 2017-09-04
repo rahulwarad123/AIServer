@@ -48,6 +48,11 @@ var EMAILSENTRESPAGENT = [
     "We have sent an email to you with agent details.",
     "Agent details has been sent to your mailbox.",
 ];
+var AGENTFINDRESP = [
+    "Sure. what's your zip code?",
+    "I can help you with that. What's your zip?",
+    "Please provide the zip?",
+];
 //#endregion
 
 //#region PUBLIC AGENT
@@ -1572,12 +1577,12 @@ AOS.prototype.handleRetrieveQuoteStart = function (sessionAttrs) {
     return deferred.promise;
 }
 
-AOS.prototype.handleRetrieveQuoteLastName = function (sessionAttrs){
+AOS.prototype.handleRetrieveQuoteLastName = function (sessionAttrs) {
     var deferred = q.defer();
     var retrieveSpeechResp = new SpeechResponse();
     var speechOutput = new Speech();
     var repromptOutput = new Speech();
-   
+
     speechOutput.text = "Now, I need your date of birth.";
     retrieveSpeechResp.speechOutput = speechOutput;
     retrieveSpeechResp.repromptOutput = speechOutput;
@@ -1619,8 +1624,8 @@ AOS.prototype.handleRetrieveQuoteZipCode = function (sessionAttrs) {
     var savedQuoteSpeechResp = new SpeechResponse();
     var speechOutput = new Speech();
     var repromptOutput = new Speech();
-     if (sessionAttrs.zipcode && sessionAttrs.email && sessionAttrs.dob && sessionAttrs.lastname) {
-         getSavedQuoteResponse(sessionAttrs)
+    if (sessionAttrs.zipcode && sessionAttrs.email && sessionAttrs.dob && sessionAttrs.lastname) {
+        getSavedQuoteResponse(sessionAttrs)
             .then(function (savedQuoteSpeechOutput) {
                 savedQuoteSpeechResp.speechOutput = savedQuoteSpeechOutput;
                 savedQuoteSpeechResp.repromptOutput = null;
@@ -1629,11 +1634,11 @@ AOS.prototype.handleRetrieveQuoteZipCode = function (sessionAttrs) {
             });
 
     }
-    else{
-                savedQuoteSpeechResp.speechOutput = "Something went wrong while retrieving please try later.";
-                savedQuoteSpeechResp.repromptOutput = null;
-                savedQuoteSpeechResp.sessionAttrs = sessionAttrs;
-                deferred.resolve(savedQuoteSpeechResp);
+    else {
+        savedQuoteSpeechResp.speechOutput = "Something went wrong while retrieving please try later.";
+        savedQuoteSpeechResp.repromptOutput = null;
+        savedQuoteSpeechResp.sessionAttrs = sessionAttrs;
+        deferred.resolve(savedQuoteSpeechResp);
     }
     return deferred.promise;
 };
@@ -2357,24 +2362,27 @@ function getSavedQuoteResponse(sessionAttrs) {
 
 function retrieveSpeachOutText(quotes) {
     var textOut = null;
-    if(quotes) {
-        if(quotes.length == 1) {        
-            if(quotes[0].policyNumber){
-                textOut = "You have a " + quotes[0].product + " policy with policy number," + "<say-as interpret-as=\"characters\">"+quotes[0].policyNumber+"</say-as>"
-                    +" and the policy was purchased on," + quotes[0].startDate;
-            }             
-    }
-    else if(quotes.length > 1) {
-        textOut = "Great!! you have multiple policies with,";
+    if (quotes) {
+        if (quotes.length == 1) {
+            if (quotes[0].policyNumber) {
+                textOut = "You have a " + quotes[0].product + " policy with policy number," + "<say-as interpret-as=\"characters\">" + quotes[0].policyNumber + "</say-as>"
+                    + " and the policy was purchased on," + quotes[0].startDate;
+            }
+        }
+        else if (quotes.length > 1) {
+            textOut = "Great!! you have multiple policies with,";
             for (var index = 0; index < quotes.length; index++) {
-                if(quotes[index].policyNumber){
-                    textOut  = textOut +  quotes[index].product + ", policy with the policy number," + quotes[index].policyNumber + " ,and the policy was purchased on," +quotes[index].startDate;                                
-                }                        
+                if (quotes[index].policyNumber) {
+                    textOut = textOut + quotes[index].product + ", policy with the policy number," + quotes[index].policyNumber + " ,and the policy was purchased on," + quotes[index].startDate;
+                }
+                else {
+                    textOut = textOut + quotes[index].product + ", policy with the policy number," + quotes[index].controlNumber + " ,and the policy was purchased on," + quotes[index].startDate;
+                }
             }
         }
         textOut = textOut + ", would you like me to email you the quote details?";
     }
-    else{
+    else {
         textOut = "I see that you do not have any purchased policies with these inputs.";
     }
     return textOut;
@@ -2384,7 +2392,7 @@ function getFinalRetrieveQuoteSendEmailResponse(sessionAttrs) {
     var deferred = q.defer();
     var finalSpeechOutput = new Speech();
     var to = sessionAttrs.email;
-    var subject = "Allstate policy details " ;
+    var subject = "Allstate policy details ";
     var body = buildRetrieveQuoteEmailBody(sessionAttrs.quotedetails, to);
     Utilities.sendEmail(to, subject, body)
         .then(function (emailStatus) {
@@ -2402,22 +2410,22 @@ function getFinalRetrieveQuoteSendEmailResponse(sessionAttrs) {
 
 function buildRetrieveQuoteEmailBody(policiesInfo, to) {
     var emailBody = "";
- 
+
     emailBody = emailBody + "\nThank you for your purchasing Allstate insurance.\n"
-    if(policiesInfo){
+    if (policiesInfo) {
         for (var index = 0; index < policiesInfo.length; index++) {
-                emailBody = emailBody + "\nBelow are details you requested regarding: " + policiesInfo[index].policyNumber;
-                emailBody = emailBody + "\n-------------------------------------------------------";
-                emailBody = emailBody + "\Product: " + policiesInfo[index].product;
-                emailBody = emailBody + "\nPurchased On: " + policiesInfo[index].startDate;
-                emailBody = emailBody + "\nAssociated Agent Name: " + policiesInfo[index].agentName;
-                emailBody = emailBody + "\nAssociated Agent Phone number: " + policiesInfo[index].agentPhoneNumber;                       
-                emailBody = emailBody + "\nAssociated Agent Email address: " + policiesInfo[index].agentEmailAddress;
-                emailBody = emailBody + "\n-------------------------------------------------------";
-                emailBody = emailBody + "\n-------------------------------------------------------";                                              
-            }
-        
-    }  
+            emailBody = emailBody + "\nBelow are details you requested regarding: " + policiesInfo[index].policyNumber;
+            emailBody = emailBody + "\n-------------------------------------------------------";
+            emailBody = emailBody + "\Product: " + policiesInfo[index].product;
+            emailBody = emailBody + "\nPurchased On: " + policiesInfo[index].startDate;
+            emailBody = emailBody + "\nAssociated Agent Name: " + policiesInfo[index].agentName;
+            emailBody = emailBody + "\nAssociated Agent Phone number: " + policiesInfo[index].agentPhoneNumber;
+            emailBody = emailBody + "\nAssociated Agent Email address: " + policiesInfo[index].agentEmailAddress;
+            emailBody = emailBody + "\n-------------------------------------------------------";
+            emailBody = emailBody + "\n-------------------------------------------------------";
+        }
+
+    }
 
     return emailBody;
 }
@@ -2744,17 +2752,17 @@ function ProcessQuoteResponse(retrieveQuoteServResp) {
         for (var index = 0; index < retrieveQuoteServResp.quoteList.length; index++) {
             var currSavedQuote = retrieveQuoteServResp.quoteList[index];
             var savedQuote = new RetrieveQuote();
-            if (currSavedQuote.policyNumber) {
-                savedQuote.policyNumber = currSavedQuote.policyNumber;
-                savedQuote.controlNumber = currSavedQuote.controlNumber;
-                savedQuote.product = currSavedQuote.product;
-                savedQuote.startDate = currSavedQuote.startDate;
-                if (currSavedQuote && currSavedQuote.agentBusinessCard) {
-                    savedQuote.agentName = currSavedQuote.agentBusinessCard.name;
-                    savedQuote.agentPhoneNumber = currSavedQuote.agentBusinessCard.phoneNumber;
-                    savedQuote.agentEmailAddress = currSavedQuote.agentBusinessCard.emailAddress;
-                }
+            //if (currSavedQuote.policyNumber) {
+            savedQuote.policyNumber = currSavedQuote.policyNumber;
+            savedQuote.controlNumber = currSavedQuote.controlNumber;
+            savedQuote.product = currSavedQuote.product;
+            savedQuote.startDate = currSavedQuote.startDate;
+            if (currSavedQuote && currSavedQuote.agentBusinessCard) {
+                savedQuote.agentName = currSavedQuote.agentBusinessCard.name;
+                savedQuote.agentPhoneNumber = currSavedQuote.agentBusinessCard.phoneNumber;
+                savedQuote.agentEmailAddress = currSavedQuote.agentBusinessCard.emailAddress;
             }
+            //}
 
             quotes.push(savedQuote);
         }
