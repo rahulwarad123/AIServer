@@ -2373,10 +2373,10 @@ function retrieveSpeachOutText(quotes) {
             textOut = "Great!! you have multiple policies with,";
             for (var index = 0; index < quotes.length; index++) {
                 if (quotes[index].policyNumber) {
-                    textOut = textOut + quotes[index].product + ", policy with the policy number," + quotes[index].policyNumber + " ,and the policy was purchased on," + quotes[index].startDate;
+                    textOut = textOut + quotes[index].product + ", policy with the policy number:" + quotes[index].policyNumber + " ,and the policy was purchased on:" + quotes[index].startDate;
                 }
                 else {
-                    textOut = textOut + quotes[index].product + ", policy with the policy number," + quotes[index].controlNumber + " ,and the policy was purchased on," + quotes[index].startDate;
+                    textOut = textOut + quotes[index].product + ", policy with the policy number:" + quotes[index].controlNumber + " ,and the policy was purchased on:" + quotes[index].startDate;
                 }
             }
         }
